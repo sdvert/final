@@ -17,7 +17,7 @@ if (isset ($complemento)){
 	$valor_real = @$dados_servico [$codigo_servico]['cost'];
 	$quantidade_real = @$dados_servico [$codigo_servico]['count'];
 
-	$valor_sms = valorSMS ($valor_real * 5.60 * 1.50, 2); // quanto vai custar esse sms, já convertido
+	$valor_sms = valorSMS ($valor_real, PORCENTAGEM_LUCRO);
 
 	if ($user ['saldo'] <= 0){
 		$botoes [][] = $tlg->buildInlineKeyBoardButton ('Recarregar Conta', null, "/recarregar");
