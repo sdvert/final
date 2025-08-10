@@ -54,7 +54,7 @@ if (empty ($lista_servicos)){
 
 		$tlg->editMessageText ([
 			'chat_id' => $tlg->ChatID (),
-			'text' => "País atual <u><b>".PAISES [$user ['pais']]."</b></u> mude com /paises\n\n<b>Escolha para qual serviço você deseja receber SMS:</b>",
+			'text' => "País atual <u><b>".PAISES [$user ['pais']]."</b></u> \n\n<b>Escolha para qual serviço você deseja receber SMS:</b>",
 			'reply_markup' => $tlg->buildInlineKeyBoard ($botoes),
 			'message_id' => $tlg->MessageID (),
 			'parse_mode' => 'html'
@@ -64,7 +64,7 @@ if (empty ($lista_servicos)){
 
 		$tlg->sendMessage ([
 			'chat_id' => $tlg->ChatID (),
-			'text' => "País atual <u><b>".PAISES [$user ['pais']]."</b></u> mude com /paises\n\n<b>Escolha para qual serviço você deseja receber SMS:</b>",
+			'text' => "País atual <u><b>".PAISES [$user ['pais']]."</b></u> \n\n<b>Escolha para qual serviço você deseja receber SMS:</b>",
 			'reply_markup' => $tlg->buildInlineKeyBoard ($botoes),
 			'parse_mode' => 'html'
 		]);
