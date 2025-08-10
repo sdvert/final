@@ -16,14 +16,15 @@ function getPorcento ($valor, $porcentagem){
 	return number_format ((($porcentagem*$valor)/100), 2);
 }
 
-function valorSMS ($valor_original, $porcentagem)
-{
-
-	$conversao = cotacaoRublo ()*$valor_original; // convertido para real
-	$porcentagem_lucro = getPorcento ($conversao, $porcentagem); // valor do lucro
-	
-		return number_format ($conversao+$porcentagem_lucro, 2);
-
+function valorSMS($valor_original, $porcentagem) {
+    // Cotação fixa 1 USD = 5.60 BRL (substitui a cotacaoRublo())
+    $conversao = 5.60 * $valor_original; 
+    
+    // Calcula o lucro (mantendo sua função getPorcento())
+    $porcentagem_lucro = getPorcento($conversao, $porcentagem); 
+    
+    // Retorna o valor total formatado com 2 decimais
+    return number_format($conversao + $porcentagem_lucro, 2); 
 }
 
 function gerarHash ($tamanho = 13)
