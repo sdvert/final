@@ -33,7 +33,7 @@ if (empty ($lista_servicos)){
 		$valor_real = $lista_servicos [$id_servico]['cost'];
 		$quantidade = $lista_servicos [$id_servico]['count'] ?? 0;
 
-		$nome = "{$nome_servico ['nome']} [{$nome_servico}]";
+		$nome = "{$nome_servico ['nome']} [{$quantidade}]";
 		$comando = "/sms {$id_servico}";
 
 		$botoes [$i][] = $tlg->buildInlineKeyBoardButton ($nome, null, $comando);
