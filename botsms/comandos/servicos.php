@@ -18,31 +18,36 @@ if (empty ($lista_servicos)){
 	]);
 
 }else {
+    foreach ($dados_servico as $id_servico => $nome_servico) {
+        // Verifica se é o serviço do Telegram (ID "tg")
+        if ($id_servico !== 'tg') {
+            continue; // Pula todos os outros serviços
+        }
 
-	foreach ($dados_servico as $id_servico => $nome_servico){
+        if (!isset($lista_servicos[$id_servico]['cost'])) {
+            continue;
+        }
 
-		if (!isset ($lista_servicos [$id_servico]['cost'])){
-			continue;
-		}
+        // Remove a lógica de substituição de IDs personalizados (não necessário para "tg")
+        // if (strpos($id_servico, 'pers_') !== false) {
+        //     $id_servico = 'ot';
+        // }
 
-		// troca id dos serviços personalizados pelo id do serviço Outros
-		if (strpos ($id_servico, 'pers_') !== false){
-			$id_servico = 'ot';
-		}
+        $valor_real = $lista_servicos[$id_servico]['cost'];
+        $quantidade = $lista_servicos[$id_servico]['count'] ?? 0;
 
-		$valor_real = $lista_servicos [$id_servico]['cost'];
-		$quantidade = $lista_servicos [$id_servico]['count'] ?? 0;
+        $nome = "{$nome_servico['nome']} [{$quantidade}]";
+        $comando = "/sms {$id_servico}";
 
-		$nome = "{$nome_servico ['nome']} [{$quantidade}]";
-		$comando = "/sms {$id_servico}";
+        // Adiciona apenas o botão do Telegram
+        $botoes[$i][] = $tlg->buildInlineKeyBoardButton($nome, null, $comando);
 
-		$botoes [$i][] = $tlg->buildInlineKeyBoardButton ($nome, null, $comando);
-
-		if (count ($botoes [$i]) == 2){
-			$i++;
-		}
-
-	}
+        // Remove a verificação de 2 botões por linha (não necessário)
+        // if (count($botoes[$i]) == 2) {
+        //     $i++;
+        // }
+    }
+}
 
 	if ($tlg->Callback_ID () != null){
 
