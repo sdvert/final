@@ -18,31 +18,30 @@ if (empty ($lista_servicos)){
 	]);
 
 }else {
+    foreach ($dados_servico as $id_servico => $nome_servico) {
+        if (!isset($lista_servicos[$id_servico]['cost'])) {
+            continue;
+        }
 
-	foreach ($dados_servico as $id_servico => $nome_servico){
+        // Troca ID dos serviços personalizados pelo ID do serviço "Outros"
+        if (strpos($id_servico, 'pers_') !== false) {
+            $id_servico = 'ot';
+        }
 
-		if (!isset ($lista_servicos [$id_servico]['cost'])){
-			continue;
-		}
+        $valor_real = $lista_servicos[$id_servico]['cost'];
+        $quantidade = $lista_servicos[$id_servico]['count'] ?? 0;
 
-		// troca id dos serviços personalizados pelo id do serviço Outros
-		if (strpos ($id_servico, 'pers_') !== false){
-			$id_servico = 'ot';
-		}
+        // Nome do serviço SEM a quantidade
+        $nome = $nome_servico['nome'];
+        $comando = "/sms {$id_servico}";
 
-		$valor_real = $lista_servicos [$id_servico]['cost'];
-		$quantidade = $lista_servicos [$id_servico]['count'] ?? 0;
+        $botoes[$i][] = $tlg->buildInlineKeyBoardButton($nome, null, $comando);
 
-		$nome = "{$nome_servico ['nome']} [{$quantidade}]";
-		$comando = "/sms {$id_servico}";
-
-		$botoes [$i][] = $tlg->buildInlineKeyBoardButton ($nome, null, $comando);
-
-		if (count ($botoes [$i]) == 2){
-			$i++;
-		}
-
-	}
+        if (count($botoes[$i]) == 2) {
+            $i++;
+        }
+    }
+}
 
 	if ($tlg->Callback_ID () != null){
 
