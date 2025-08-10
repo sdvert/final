@@ -8,22 +8,40 @@
 
 // pega cotação do rublo(₽) usado na api para fazer conversão para reais
 // é usado o redis para cache da cotação e evitar requisições desnecessarias
-function cotacaoRublo() {
-    return 5.60; // Valor fixo em USD
+function cotacaoRublo ()
+{
+
+	global $redis;
+
+	if ($redis->exists ('cotacao-rublo')){
+		return $redis->get ('cotacao-rublo');
+	}
+
+	$get = @json_decode (file_get_contents ('https://www.xe.com/pt/api/stats.php?fromCurrency=USD&toCurrency=BRL'), true);
+
+	if (isset ($get ['payload'])){
+
+		$cotacao = $get ['payload']['Last_30_Days']['high'];
+		// guarda cache por 24 horas
+		$redis->setEx ('cotacao-rublo', 86400, $cotacao);
+
+			return $cotacao;
+
+	}
+
+	return 5.60; // cotação padrão, dia 13/01/2020
+
 }
 
 function getPorcento ($valor, $porcentagem){
 	return number_format ((($porcentagem*$valor)/100), 2);
 }
 
-function valorSMS($valor_original) {
-    $cotacao_fixa = 5.60; // 1 USD = 5.60 BRL
-    $porcentagem_fixa = 50; // 50% de acréscimo
+function valorSMS ($valor_original, $porcentagem)
+{
+    $porcentagem_lucro = getPorcento($valor_original, $porcentagem); // valor do lucro
     
-    $valor_em_real = $valor_original * $cotacao_fixa;
-    $valor_final = $valor_em_real * 1.50; // +50%
-    
-    return number_format($valor_final, 2); // Formata para 2 decimais
+    return number_format($valor_original + $porcentagem_lucro, 2);
 }
 
 function gerarHash ($tamanho = 13)
