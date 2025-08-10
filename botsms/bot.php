@@ -59,17 +59,7 @@ for ($i = 0; $i < $tlg->UpdateCount (); $i++):
 		case '🔥Serviços':
 			include 'comandos/servicos.php';
 		break;
-
-		case '/paises':
-		case '/countries':
-		case '🚩 Países':	
-			include 'comandos/paises.php';
-		break;
-
-		case '/pais':
-			include 'comandos/pais.php';
-		break;
-
+		
 		case '/sms':
 			include 'comandos/servico.php';
 		break;
